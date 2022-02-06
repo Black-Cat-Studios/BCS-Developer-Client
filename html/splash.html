@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../style/splash.css" >
+</head>
+<body>
+
+<div style='border-radius: 5px;' id = 'main'>
+    <h1>BCS Dev Client</h1>
+    <h3>1.0.0</h3>
+    <p id="p">Opening app...</p>
+    <div id="background">
+    <img src="../icons/logo.png" />
+    
+    <script>
+        function dot(){
+            if (document.getElementById("p").textContent.split(".").length - 1 ===3){
+                document.getElementById("p").textContent = "Opening app"
+            }else{
+                document.getElementById("p").textContent += "."
+            }
+            setTimeout(function () {
+                dot()
+            }, 1000);
+        }
+
+        dot()
+    </script>
+</div>
+
+</html>

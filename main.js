@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron');
+const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,13 +13,38 @@ function createWindow () {
         height: 600,
         frame: false,
         backgroundColor: '#FFF',
+        show: false,
+        hasShadow: false,
+        icon: './icons/logo.png',
         webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true
         }
     });
 
     // and load the index.html of the app.
     mainWindow.loadFile('index.html');
+
+    var splash = new BrowserWindow({
+        width: 550, 
+        height: 290, 
+        transparent: true, 
+        frame: false, 
+        alwaysOnTop: true, 
+        fullscreenable: false,
+        minimizable: false,
+        maximizable: false,
+        resizable: false,
+        icon: './icons/logo.png',
+    });
+    
+    splash.loadFile('./html/splash.html');
+    splash.center();
+    
+    setTimeout(function () {
+        splash.close();
+        mainWindow.show();
+    }, 10000);
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();
@@ -31,6 +57,8 @@ function createWindow () {
         mainWindow = null;
     });
 }
+
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
