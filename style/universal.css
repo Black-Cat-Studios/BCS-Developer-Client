@@ -1,3 +1,12 @@
+:root{
+  --color-1: #212121;
+  --color-bg: #2F2F2F;
+}
+
+* {margin: 0; padding: 0; border: 0; vertical-align: baseline;}
+html {box-sizing: border-box;}
+*, *:before, *:after {box-sizing: inherit;}
+html, body {height: 100%; margin: 0;}
 
 ::-webkit-scrollbar {
     width: 19px;
@@ -47,12 +56,27 @@ body {
     position: fixed;
     height: 32px;
     width: calc(100% - 2px);
-    background-color: #212121;
 }
   
   .maximized #titlebar {
     width: 100%;
     padding: 0;
+}
+
+body#native #titlebar{
+  background-color: #212121;
+}
+
+body.noback #back-button{
+display: none;
+}
+
+body.nomin #min-button{
+  display: none;
+}
+
+body.nomax #max-button{
+  display: none;
 }
   
   #main {
@@ -110,7 +134,7 @@ body {
   
   #window-controls {
     display: grid;
-    grid-template-columns: repeat(3, 46px);
+    grid-template-columns: repeat(4, 46px);
     position: absolute;
     top: 0;
     right: 0;
@@ -161,15 +185,22 @@ body {
   #close-button:active .icon {
     filter: invert(1);
   }
-  
-  #min-button {
+
+  #back-button{
     grid-column: 1;
   }
-  #max-button, #restore-button {
+
+  #back-button .icon{
+    width: 15px;
+  }
+  #min-button {
     grid-column: 2;
   }
-  #close-button {
+  #max-button, #restore-button {
     grid-column: 3;
+  }
+  #close-button {
+    grid-column: 4;
   }
   
   #restore-button {

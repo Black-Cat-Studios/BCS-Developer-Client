@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="../style/universal.css" />
+  </head>
+  <body class="noback nomin nomax">
+    <div id="main">
+      <img src="../icons/logo.png">
+      <h1>Login</h1>
+      <p>USERNAME</p>
+      <input type="text" autocomplete="off" id="username" name="username" placeholder="Username"/> <p id="add">@black-catstudios.com</p>
+      <p>PASSWORD</p>
+      <input type="password" autocomplete="off" id="password" name="password" placeholder="Password" />
+      <button id="login">Log in</button>
+      <p id="error" style="margin-top:10px;font-size:10px;display:none;text-align: center; color: rgb(182, 93, 93);">Error</p>
+    </div>
+
+    <script>
+        
+      require('../renderer.js')
+      
+    </script>
+    <style>
+        body{
+            background-color: var(--color-1);
+        }
+
+        #main h1{
+            margin-top:-2px;
+            margin-bottom: 20px;
+        }
+
+        #main{
+            width: 90%!important;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        #main img{
+            float: right;
+            display:inline;
+            width: 35px;
+        }
+
+        #main p{
+            color: grey;
+        }
+
+        input{
+            background-color: rgba(0,0,0,0);
+            border: 1px solid rgba(112, 112, 112, 0.521);
+            border-radius: 5px;
+            padding: 10px;
+            width: calc(100% - 20px);
+            color: white;
+            transition: all .2s;
+            margin-bottom: 20px;
+        }
+
+        input:first-of-type{
+            width: 50%;
+            border-radius: 5px 0 0px 5px;
+        }
+
+        input:focus{
+            border: 1px solid rgb(255, 255, 255);
+            outline: none;
+        }
+
+        input:first-of-type:focus ~ #add{
+            border: 1px solid rgb(255, 255, 255);
+            border-left: none;
+        }
+
+        #add{
+            float:right;
+            width: calc(50% - 20px);
+            border: 1px solid rgba(112, 112, 112, 0.521);
+            border-left: none;
+            margin-top: 0px;
+            margin-right: 20px;
+            border-radius: 0px 5px 5px 0px!important;
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            font-size: 11px;
+            transition: all .2s;
+        }
+
+        #main button{
+            margin: auto;
+            display: block; 
+            margin-top: 40px;
+            border:none; 
+            background-color: white;  
+            padding: 10px 60px;  
+            border-radius: 10px; 
+            outline: none;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        
+        #main button:active, button:hover, button:focus{
+            background-color: rgb(197, 194, 194);
+        }
+
+        button.load{
+            background-color: rgb(197, 194, 194);
+        }
+
+    </style>
+  </body>
+</html>

@@ -1,13 +1,67 @@
-// Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron');
 const path = require('path')
+const Data = require('./res/data.js');
+require("dotenv").config();
+const {validate} = require('./res/loginIMAP');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+function loadEmail(win){
+    win.loadFile("./html/email.html")
+}
+
+const data = new Data({
+    configName: "user-preferences",
+    defaults:{
+        account: null,
+        theme: "dark"
+    }
+})
+
+async function authenticate(){
+
+    let account = data.get("account")   
+
+    function createAuthWin(){
+        var authwin = new BrowserWindow({
+            width: 400,
+            height: 400,
+            frame: false,
+            backgroundColor: '#FFF',
+            hasShadow: false,
+            icon: './icons/logo.png',
+            resizable: false,
+            fullscreenable: false,
+            minimizable: false,
+            maximizable: false,
+            closable: false,
+            parent: mainWindow,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js'),
+                nodeIntegration: true,
+                contextIsolation: false,
+                enableRemoteModule: true,
+            }
+        });
+
+        authwin.loadFile('./html/login.html');
+        authwin.center();
+
+        require("@electron/remote/main").enable(authwin.webContents)
+
+        return authwin;
+    }
+
+    if (!account) {
+        createAuthWin();
+    } else if(await validate(account.email,account.password)){
+        createAuthWin();
+    }
+
+}
+
 function createWindow () {
-    // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -18,12 +72,15 @@ function createWindow () {
         icon: './icons/logo.png',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
         }
     });
 
-    // and load the index.html of the app.
-    mainWindow.loadFile('index.html');
+    mainWindow.loadFile('./html/index.html');
+
+    require("@electron/remote/main").enable(mainWindow.webContents)
 
     var splash = new BrowserWindow({
         width: 550, 
@@ -43,44 +100,28 @@ function createWindow () {
     
     setTimeout(function () {
         splash.close();
+        authenticate();
         mainWindow.show();
     }, 10000);
 
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
-
-    // Emitted when the window is closed.
     mainWindow.on('closed', () => {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
         mainWindow = null;
     });
 }
 
 
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', function () {
-    // On macOS it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
 
 app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow();
     }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+require('@electron/remote/main').initialize()

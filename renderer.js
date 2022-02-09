@@ -1,7 +1,8 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const remote = require('electron').remote;
+const remote = require('@electron/remote');
+const {validate} = require('./res/loginIMAP');
 
 const win = remote.getCurrentWindow(); /* Note this is different to the
 html global `window` variable */
@@ -11,7 +12,16 @@ document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
         handleWindowControls();
 
-        document.getElementById('electron-ver').innerHTML = `${process.versions.electron}`
+        document.getElementById('login').addEventListener('click', async (event) => {
+            document.getElementById('error').style.display = 'none';
+            let invalid = await validate(document.getElementById('username').value + "@black-catstudios.com", document.getElementById('password').value)
+            if (!invalid){
+                win.destroy();
+            }else{
+                document.getElementById('error').textContent = invalid;
+                document.getElementById('error').style.display = 'block';
+            }
+        });
     }
 };
 
