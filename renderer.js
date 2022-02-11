@@ -13,11 +13,13 @@ document.onreadystatechange = (event) => {
         handleWindowControls();
 
         document.getElementById('login').addEventListener('click', async (event) => {
+            document.getElementById('login').classList.add('load');
             document.getElementById('error').style.display = 'none';
             let invalid = await validate(document.getElementById('username').value + "@black-catstudios.com", document.getElementById('password').value)
             if (!invalid){
                 win.destroy();
             }else{
+                document.getElementById('login').classList.remove('load');
                 document.getElementById('error').textContent = invalid;
                 document.getElementById('error').style.display = 'block';
             }

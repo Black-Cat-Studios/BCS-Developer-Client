@@ -14,7 +14,8 @@
       <input type="text" autocomplete="off" id="username" name="username" placeholder="Username"/> <p id="add">@black-catstudios.com</p>
       <p>PASSWORD</p>
       <input type="password" autocomplete="off" id="password" name="password" placeholder="Password" />
-      <button id="login">Log in</button>
+      <button class="load" >Log in</button>
+      <div class="loader"></div>
       <p id="error" style="margin-top:10px;font-size:10px;display:none;text-align: center; color: rgb(182, 93, 93);">Error</p>
     </div>
 
@@ -104,11 +105,32 @@
         }
         
         #main button:active, button:hover, button:focus{
-            background-color: rgb(197, 194, 194);
+            background-color: rgb(190, 190, 190);
         }
 
         button.load{
-            background-color: rgb(197, 194, 194);
+            background-color: rgb(190, 190, 190)!important;
+            color: rgba(83, 83, 83, 0);
+        }
+
+        .loader{
+            position: absolute;
+            display: none;
+            left: calc(50% - 7%); 
+            margin-top:-30px;
+            margin-bottom: -30px;
+            border:none; 
+            color: var(--color-1);
+            padding: 10px 40px;  
+            max-width: 1px!important;
+            border-radius: 10px; 
+            outline: none;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        button.load ~ .loader{
+            display: block;
         }
 
     </style>

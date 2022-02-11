@@ -1,8 +1,18 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path')
-const Data = require('./res/data.js');
+const Store = require('electron-store');
 require("dotenv").config();
 const {validate} = require('./res/loginIMAP');
+
+const store = new Store();
+
+const defaults = {
+    userInterface: {
+        theme: "system",
+    }
+}
+
+//let account = data.get("account") 
 
 let mainWindow;
 
@@ -10,17 +20,9 @@ function loadEmail(win){
     win.loadFile("./html/email.html")
 }
 
-const data = new Data({
-    configName: "user-preferences",
-    defaults:{
-        account: null,
-        theme: "dark"
-    }
-})
-
 async function authenticate(){
 
-    let account = data.get("account")   
+      
 
     function createAuthWin(){
         var authwin = new BrowserWindow({
@@ -53,7 +55,7 @@ async function authenticate(){
         return authwin;
     }
 
-    if (!account) {
+    if (!false) {
         createAuthWin();
     } else if(await validate(account.email,account.password)){
         createAuthWin();
