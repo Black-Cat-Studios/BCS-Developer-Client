@@ -12,9 +12,40 @@ h1 {
   line-height: 1.2;
 }
 
-p {
-  margin-top: 10px;
-  color: rgba(255,255,255,0.4);
+aside{
+  float: right;
+  height: 100%;
+  width: 30%;
+  background: black;
 }
+
+div.app{
+  height: 200px;
+  width: 150px; 
+  overflow: hidden;
+  padding: 10px;   
+  border: 1px solid var(--color-blend);
+  border-radius: 10px; 
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+div.app:hover, div.app:focus, div.app:active{
+  background: var(--color-blend-opaque);
+
+}
+
+div.app img{
+  width: 50%;  
+  margin: auto; 
+  display:block; 
+  margin-bottom: 10px;
+}
+
+div.app p{
+  color: var(--color-blend);
+}
+
 
 /* Styling of window frame and titlebar */
