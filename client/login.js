@@ -2,7 +2,11 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const remote = require('@electron/remote');
-const {validate} = require('./res/loginIMAP');
+const { ipcRenderer } = require("electron")
+const {validate} = require('../res/loginIMAP');
+const Store = require('electron-store');
+
+const store = new Store();
 
 const win = remote.getCurrentWindow(); /* Note this is different to the
 html global `window` variable */
@@ -11,13 +15,25 @@ html global `window` variable */
 document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
         handleWindowControls();
+  
+        ipcRenderer.on('loadin', function() {
+            document.body.classList.add("loaded")
+        });
 
         document.getElementById('login').addEventListener('click', async (event) => {
             document.getElementById('login').classList.add('load');
             document.getElementById('error').style.display = 'none';
             let invalid = await validate(document.getElementById('username').value + "@black-catstudios.com", document.getElementById('password').value)
             if (!invalid){
-                win.destroy();
+                store.set({
+                    account: {
+                        user: document.getElementById('username').value + "@black-catstudios.com",
+                        pass: document.getElementById('password').value,
+                        nick: document.getElementById('username').value
+                    }
+                });
+
+                win.close();
             }else{
                 document.getElementById('login').classList.remove('load');
                 document.getElementById('error').textContent = invalid;
@@ -48,9 +64,7 @@ function handleWindowControls() {
         win.unmaximize();
     });
 
-    document.getElementById('close-button').addEventListener("click", event => {
-        win.close();
-    });
+    
 
     // Toggle maximise/restore buttons when maximisation/unmaximisation occurs
     toggleMaxRestoreButtons();

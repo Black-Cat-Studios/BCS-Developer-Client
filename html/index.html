@@ -2,33 +2,70 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Home</title>
 
     <link rel="stylesheet" href="../style/style.css" />
   </head>
-  <body id="native" class="noback">
+  <body id="native" class="noback loaded">
+    <div id="loaderpage">
+      <img src="../icons/logo.png"/>
+      <div style="color:white" class="loader"></div>
+      <h2>Authenticating</h2>
+    </div>
     <div id="main">
+      <button class="settings" id="settbutton"><img src="../icons/settings.png" /></button>
       
-      <h1>Welcome, inty.</h1>
+      <div id="tabber">
+        <button id="act" class="active">Built-in</button>
+        <button id="int">Integrated</button>
+      </div>
+      
+      <h1>Welcome, <span id="user"></span>.</h1>
+
+      
+
+      <hr>
+
       <div id="appcontainer">
-        <hr>
-        <p>Local</p>
         
-        <div class="app">
-          <img src="../icons/logo.png">
-          <h3>App Name</h3>   
-          <p>App Description</p>
+        <div class="d" id="builtin">
+
+          <div class="app">
+            <img src="../icons/emaillogo.png">
+            <h3>Email</h3>   
+            <p>Access your account's email</p>
+          </div>
+
+          <div class="app">
+            <img src="../icons/todologo.png">
+            <h3>To-Do</h3>   
+            <p>Manage individual lists for your projecs</p>
+          </div>
+
+          <div class="app">
+            <img src="../icons/filesharinglogo.png">
+            <h3>Files</h3>   
+            <p>Send or get files from other developers</p>
+          </div>
+
         </div>
-        
-        <hr>
-        <p>External</p>
-        
+
+        <div  class="d" style="display:none;" id="integrated">
+
+          <div class="app">
+            <img alt="github logo" src="https://rajlab.org/icons/github_white.png">
+            <h3>Github</h3>   
+            <p>See and manage github projects</p>
+          </div>
+
+        </div>
+
       </div>
     </div>
 
     <script>
       // You can also require other files to run in this process
-      require('../renderer.js')
+      require('../client/main.js')
     </script>
   </body>
 </html>

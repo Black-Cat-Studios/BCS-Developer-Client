@@ -10,18 +10,18 @@
     <div id="main">
       <img src="../icons/logo.png">
       <h1>Login</h1>
-      <p>USERNAME</p>
+      <p>Username</p>
       <input type="text" autocomplete="off" id="username" name="username" placeholder="Username"/> <p id="add">@black-catstudios.com</p>
-      <p>PASSWORD</p>
+      <p>Password</p>
       <input type="password" autocomplete="off" id="password" name="password" placeholder="Password" />
-      <button class="load" >Log in</button>
-      <div class="loader"></div>
+      <button id="login" >Log in</button>
+      <div class="loader small"></div>
       <p id="error" style="margin-top:10px;font-size:10px;display:none;text-align: center; color: rgb(182, 93, 93);">Error</p>
     </div>
 
     <script>
         
-      require('../renderer.js')
+      require('../client/login.js')
       
     </script>
     <style>
@@ -113,7 +113,7 @@
             color: rgba(83, 83, 83, 0);
         }
 
-        .loader{
+        .loader.small{
             position: absolute;
             display: none;
             left: calc(50% - 7%); 

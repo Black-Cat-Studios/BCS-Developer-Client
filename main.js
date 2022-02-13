@@ -1,16 +1,18 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path')
 const Store = require('electron-store');
 require("dotenv").config();
 const {validate} = require('./res/loginIMAP');
 
-const store = new Store();
-
-const defaults = {
+const defaul = {
     userInterface: {
         theme: "system",
     }
 }
+
+const store = new Store({
+    defaults: defaul,
+});
 
 //let account = data.get("account") 
 
@@ -22,7 +24,7 @@ function loadEmail(win){
 
 async function authenticate(){
 
-      
+    var account = store.get('account')
 
     function createAuthWin(){
         var authwin = new BrowserWindow({
@@ -36,7 +38,6 @@ async function authenticate(){
             fullscreenable: false,
             minimizable: false,
             maximizable: false,
-            closable: false,
             parent: mainWindow,
             modal: true,
             webPreferences: {
@@ -50,23 +51,30 @@ async function authenticate(){
         authwin.loadFile('./html/login.html');
         authwin.center();
 
+        authwin.once('close', function() {
+            mainWindow.webContents.send("loadin") 
+         });
+
         require("@electron/remote/main").enable(authwin.webContents)
 
         return authwin;
     }
 
-    if (!false) {
+    if (!account) {
         createAuthWin();
-    } else if(await validate(account.email,account.password)){
+    } else if(await validate(account.user,account.pass)){
         createAuthWin();
+    } else{
+        mainWindow.webContents.send("loadin")
     }
-
 }
 
 function createWindow () {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 650,
+        minWidth: 800,
+        minHeight: 600,
         frame: false,
         backgroundColor: '#FFF',
         show: false,
@@ -125,5 +133,33 @@ app.on('activate', function () {
         createWindow();
     }
 });
+
+ipcMain.on("opensettings", function () {
+    var settWin = new BrowserWindow({
+        width: 400,
+        height: 400,
+        frame: false,
+        backgroundColor: '#FFF',
+        hasShadow: false,
+        icon: './icons/logo.png',
+        resizable: false,
+        fullscreenable: false,
+        minimizable: false,
+        maximizable: false,
+        parent: mainWindow,
+        modal: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
+        }
+    });
+
+    settWin.loadFile('./html/settings.html');
+    settWin.center();
+
+    require("@electron/remote/main").enable(settWin.webContents)
+})
 
 require('@electron/remote/main').initialize()

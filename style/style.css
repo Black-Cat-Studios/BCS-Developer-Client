@@ -20,20 +20,35 @@ aside{
 }
 
 div.app{
-  height: 200px;
-  width: 150px; 
+  height: 250px;
+  width: 160px; 
   overflow: hidden;
   padding: 10px;   
-  border: 1px solid var(--color-blend);
+  background: var(--color-bgblend);
   border-radius: 10px; 
   text-align: center;
   cursor: pointer;
   transition: all 0.1s;
+  position: relative;
+  margin: 20px;
 }
 
-div.app:hover, div.app:focus, div.app:active{
-  background: var(--color-blend-opaque);
+div.app::after{
+  position: absolute;
+  content: "Open";
+  background: var(--color); 
+  width: 140px;
+  padding: 7px; 
+  border-radius: 10px; 
+  bottom: 10px;
+  float: left;   
+  color: var(--coloropp);
+  display: block; 
+  font-weight: 500;
+}
 
+div.app:hover::after, div.app:focus::after, div.app:active::after{
+  opacity: .8;
 }
 
 div.app img{
@@ -47,5 +62,148 @@ div.app p{
   color: var(--color-blend);
 }
 
+button.settings{
+  width: 40px;
+  height: 40px;
+  background: var(--color-bgblend);
+  overflow: hidden;
+  padding: 10px;   
+  margin-left: 10px;
+  border-radius: 10px; 
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.1s;
+  float: right;
+}
 
-/* Styling of window frame and titlebar */
+button.settings img{
+  width: 120%;
+  margin: 0;
+  margin-left: -2px;
+  margin-top:-1px;
+}
+
+button.settings:hover, button.settings:focus, button.settings:active{
+  background: var(--color-blend-opaque);
+}
+
+#loaderpage{
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 32px);
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: var(--color-bg);
+  transition: all 1s;
+}
+
+#loaderpage img{
+  width: 50px;
+  margin-bottom: 20px;
+  transition: all 1s;
+}
+
+#loaderpage div{
+  width: 60px;
+  margin-bottom: 10px;
+  transition: all 1s;
+}
+
+body.loaded #loaderpage{
+  pointer-events: none;
+  opacity: 0;
+}
+
+body.loaded #loaderpage div{
+  pointer-events: none;
+  opacity: 0;
+}
+
+body.loaded #loaderpage img{
+  pointer-events: none;
+  opacity: 0;
+}
+
+body.loaded #loaderpage h2{
+  pointer-events: none;
+  opacity: 0;
+}                
+
+hr{
+  width: 200%;
+  position: relative;
+  margin-right: -20px;
+  background: var(--color-bgblend);
+}
+
+#tabber {
+  float: right;
+}
+
+#tabber button{
+  position:relative;
+}
+
+#tabber button{
+  background: transparent;
+  color: var(--color-blend);
+  font: inherit; 
+  padding: 10px;
+  cursor: pointer;
+}
+
+#tabber button::before{
+  width: 55px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0);
+  margin-left: -1px;
+  content: '';
+  position: absolute;
+  margin-top: 20px;
+  transition: all .2s;
+}
+
+#tabber button.active{
+  color: var(--color)
+}
+
+#tabber button:last-of-type::before{
+  width: 75px;
+}
+
+#tabber button.active button:hover{
+  color: var(--color)
+}
+
+#tabber button.active::before{
+  opacity: 1;
+  background-color: rgb(255, 255, 255)!important;
+}
+
+#tabber button:hover::before{
+  background-color: var(--color-bgblend);
+  opacity: 1;
+}
+
+#appcontainer{
+  max-height: calc(100% - 89px);
+  width: 100%;
+  overflow: auto;
+  resize: none;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#appcontainer .d{
+  width: 100%;
+  resize: none;
+  display: flex;
+  flex-flow: row wrap;
+} 
+
+span{
+  color: var(--color);
+}

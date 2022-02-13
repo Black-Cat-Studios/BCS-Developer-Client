@@ -1,0 +1,10 @@
+@import url(
+    './universal.css'
+);
+
+hr{
+    width: 200%;
+    position: relative;
+    margin-right: -20px;
+    background: var(--color-bgblend);
+  }
