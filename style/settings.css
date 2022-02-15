@@ -7,4 +7,34 @@ hr{
     position: relative;
     margin-right: -20px;
     background: var(--color-bgblend);
-  }
+}
+
+div.category{
+    background: var(--color-bgblend);
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+div.category p:first-of-type{
+    color: var(--color-blend);
+    margin-top: -25px;
+    position: absolute;
+}
+
+.themebutton{
+    width: 185px;
+    height: 100px; 
+    background: url('../icons/system-theme.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.themebutton::after{
+    
+}
+
+.themebutton.active{
+    border: solid 1px white;
+}
