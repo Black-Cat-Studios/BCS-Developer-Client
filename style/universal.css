@@ -8,6 +8,16 @@
   --color-blend-opaque: rgba(255,255,255,0.1);
 }
 
+body.vegetta{
+  --color: rgb(255, 228, 251); 
+  --coloropp: black;
+  --color-fg: #2c0041;
+  --color-bg: #371a3f;
+  --color-bgblend: rgb(92, 56, 92);
+  --color-blend: rgba(226, 155, 240, 0.4);
+  --color-blend-opaque: rgba(226, 140, 252, 0.1);
+}
+
 * {margin: 0; padding: 0; border: 0; vertical-align: baseline;}
 html {box-sizing: border-box;}
 *, *:before, *:after {box-sizing: inherit;}
