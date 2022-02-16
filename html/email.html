@@ -2,13 +2,47 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Email</title>
 
-    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="stylesheet" href="../style/email.css" />
   </head>
-  <body style="background-color:#21292c;" id="">
+  <body id="native">
+    <input type="text" class="addtotop" id="emlsearch" />
+
     <div id="main">
-      <iframe style="width:100%;height:100%;" src="https://black-catstudios.com/mail"> </iframe>
+      <aside id="boxes">
+        <p>email@email.email</p>  
+        <hr>
+        <div id="boxselector">
+          <button id="inbox"> Inbox </button>
+          <button id="inbox"> Drafts </button>
+          <button id="inbox"> Sent </button>
+          <button id="inbox"> Spam </button>
+          <button id="inbox"> Trash </button>
+        </div>
+      </aside>
+
+      <div id="mail">
+        <div class="mailentry">
+          <h3>Name</h3>
+          <p>A really epic title</p>
+          <span>Today, 2:40PM</span>
+        </div>
+      </div>
+
+      <div id="preview">
+        <h1>A really epic title</h1>
+        <p>Name <span>email@email.email</span></p>
+        <span>Today at 2:40</span>
+        <div id="rightbuttons">
+          <button id="reply"></button>
+          <button id="forward"></button>
+        </div>
+
+        <div id="emailpreview">
+
+        </div>
+      </div>
     </div>
 
     <script>

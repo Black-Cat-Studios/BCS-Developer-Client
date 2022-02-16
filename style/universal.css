@@ -5,7 +5,7 @@
   --color-bg: #2F2F2F;
   --color-bgblend: rgb(75, 75, 75);
   --color-blend: rgba(255,255,255,0.4);
-  --color-blend-opaque: rgba(255,255,255,0.1);
+  --color-blend-opaque: rgba(172, 172, 172, 0.178);
 }
 
 body.vegetta{
