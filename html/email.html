@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="../style/email.css" />
   </head>
   <body id="native">
-    <input type="text" class="addtotop" id="emlsearch" />
-
+    <div id="addtotop">
+      <input type="text" id="emlsearch" placeholder="Search..." />
+    </div>
+    
     <div id="main">
       <aside id="boxes">
         <p>email@email.email</p>  
         <hr>
         <div id="boxselector">
-          <button id="inbox"> Inbox </button>
+          <button class="active" id="inbox"> Inbox </button>
           <button id="drafts"> Drafts </button>
           <button id="sent"> Sent </button>
           <button id="spam"> Spam </button>
@@ -24,16 +26,70 @@
 
       <div id="mail">
         <div class="mailentry">
+          <span>Today, 2:40PM</span>
           <h3>Name</h3>
           <p>A really epic title</p>
-          <span>Today, 2:40PM</span>
         </div>
+
+        <div class="mailentry active">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        <div class="mailentry">
+          <span>Today, 2:40PM</span>
+          <h3>Name</h3>
+          <p>A really epic title</p>
+        </div>
+        
       </div>
 
       <div id="preview">
         <h1>A really epic title</h1>
+        <span class="span">Today at 2:40</span>
         <p>Name <span>email@email.email</span></p>
-        <span>Today at 2:40</span>
         <div id="rightbuttons">
           <button id="reply"></button>
           <button id="forward"></button>

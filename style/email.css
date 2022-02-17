@@ -157,7 +157,7 @@
     display: grid;
     grid-template-columns: 20% 40% 50%;
     grid-template-rows: 100%;
-    
+    overflow: hidden;
     padding: 0;
 }
 
@@ -201,16 +201,98 @@ hr{
     content: '';
     display: block;
     position: absolute;
-    width: 20px;
-    height: 20px; 
-    background-image: url('../icons/edit.png');
+    width: 18px;
+    height: 18px; 
+    background-image: url('../icons/inbox-icon.png');
     background-size: cover;
     background-repeat: no-repeat;
     overflow: hidden;
     margin-left: -30px;
-    margin-top: -5px; 
 }
 
 #boxselector button:hover, #boxselector button.active{
    background: var(--color-blend-opaque);
+}
+
+button#drafts::before{
+    background-image: url('../icons/drafts-icon.png');
+}
+
+button#sent::before{
+    background-image: url('../icons/sent-icon.png');
+}
+
+button#spam::before{
+    background-image: url('../icons/spam-icon.png');
+}
+
+button#trash::before{
+    background-image: url('../icons/trash-icon.png');
+}
+
+#mail{
+    overflow: auto;
+    scroll-snap-type: y proximity;
+}
+#mail .mailentry{
+    padding: 10px; 
+    height: 72px;
+    border-bottom: 1px solid var(--color-blend);
+    transition: background-color .2s;
+    cursor: pointer;
+    scroll-snap-align: start;
+}
+
+#mail :is(.mailentry:hover, .mailentry.active){
+    border-left: 3px solid var(--color);
+    background: var(--color-blend-opaque);
+}
+
+#mail .mailentry span{
+    float: right;
+}
+
+#preview{
+    box-shadow: 0 8px 20px -2px var(--coloropp);
+}
+
+#preview{
+    user-select: initial!important;
+}
+
+#preview .span{
+    float: right;
+}
+
+p span{
+    color: var(--color-blend)
+}
+
+input#emlsearch{
+    width: 70%;   
+    background-color: var(--color-bg);
+    outline: none; 
+    padding: 7px;
+    color: var(--color);
+    border-radius: 10px;
+    padding-left: 30px;
+    outline: 5px solid red;
+}
+
+div#addtotop{
+    
+}
+
+div#addtotop::before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 18px;
+    height: 18px; 
+    background-image: url('../icons/inbox-icon.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    margin-top: -23px;
+    margin-left: -50px;
 }

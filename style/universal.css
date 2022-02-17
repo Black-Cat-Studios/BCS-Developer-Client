@@ -74,7 +74,10 @@ body {
     border: 1px solid #00000000;
     background-color:var(--color-bg);
     overflow-y: hidden;
-    user-select: none;
+}
+
+#main > * {
+  user-select: none;
 }
   
   #titlebar {
