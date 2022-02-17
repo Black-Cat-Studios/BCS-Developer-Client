@@ -20,6 +20,11 @@ div.category{
     position: relative;
 }
 
+div.category:last-of-type{
+    padding-top: 30px;
+    padding-bottom: 0.1px;
+}
+
 p.header{
     color: var(--color-blend);
     margin: 5px;
@@ -39,13 +44,13 @@ p.header:first-of-type{
 }
 
 .themebutton{
-    width: 185px;
-    height: 100px; 
+    width: 145px;
+    height: 80px; 
     background: url('../icons/system-theme.png');
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 12px;
-    margin: 15px;
+    margin: 10px;
     margin-bottom: 40px;
     cursor: pointer;
     position: relative;
@@ -93,4 +98,56 @@ p.header:first-of-type{
 #vegetta::after{
     content: "Vegetta";
     margin-left: -20px;
+}
+
+input{
+    
+    display: block;
+    margin:auto;
+}
+
+input ~p{
+    margin-top:-60px;
+    margin-left: 10px;
+    
+}
+
+#change{
+  background: var(--color); 
+  position: relative;
+  width: calc(100% - 20px);
+  padding: 10px; 
+  border-radius: 10px;   
+  color: var(--coloropp);
+  display: block; 
+  font-weight: 500;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+#change:hover{
+    opacity: .7;
+}
+
+#changenick{
+    position: absolute;
+    background: var(--color); 
+    width: calc(30% - 20px);
+    padding: 6px; 
+    border-radius: 5px;   
+    color: var(--coloropp);
+    display: block; 
+    font-weight: 500;
+    margin: auto;
+    margin-top: -32px;
+    right: 14px;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+#changenick:hover{
+    opacity: .7;
 }

@@ -1,4 +1,5 @@
-
+const Store = require('electron-store');
+const store = new Store();
 
 window.addEventListener('DOMContentLoaded', () => {
   document.body.innerHTML = `
@@ -30,5 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
   </header>` + document.body.innerHTML
+  let theme = store.get("userInterface.theme")
+  document.body.classList.add(theme)
 })
   

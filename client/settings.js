@@ -8,23 +8,66 @@ const Store = require('electron-store');
 
 const store = new Store();
 
-const win = remote.getCurrentWindow(); /* Note this is different to the
-html global `window` variable */
+const win = remote.getCurrentWindow(); 
 
-// When document has loaded, initialise
 document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
         handleWindowControls();
-        
 
+        var els = document.getElementsByClassName("themebutton");
+        
+        function setthemebuttons(){
+            for(var i = 0; i < els.length; i++){
+              els[i].classList.remove('active')
+
+              if (els[i].id === store.get("userInterface.realTheme")){
+                els[i].classList.add('active')
+              }
+            }
+        }
+
+        setthemebuttons();
+
+        document.getElementById("dark").addEventListener('click', (event) => {
+            store.set("userInterface.realTheme", 'dark');
+            setthemebuttons();
+        })
+
+        document.getElementById("light").addEventListener('click', (event) => {
+            store.set("userInterface.realTheme", 'light');
+            setthemebuttons();
+        })
+
+        document.getElementById("system").addEventListener('click', (event) => {
+            store.set("userInterface.realTheme", 'system');
+            setthemebuttons();
+        })
+
+        document.getElementById("vegetta").addEventListener('click', (event) => {
+            store.set("userInterface.realTheme", 'vegetta');
+            setthemebuttons();
+        })
+
+        document.getElementById("nickname").value = store.get("account.nick")
+
+        document.getElementById('changenick').addEventListener("click", function () {
+            store.set("account.nick", document.getElementById("nickname").value) 
+        })
+
+        document.getElementById('change').addEventListener("click", function () {
+            ipcRenderer.send('forceauthenticate')
+        })
     }
 };
 
 window.onbeforeunload = (event) => {
     win.removeAllListeners();
+
+    ipcRenderer.send('reload')
 }
 
 function handleWindowControls() {
+    
     // Make minimise/maximise/restore/close buttons work when they are clicked
     document.getElementById('min-button').addEventListener("click", event => {
         win.minimize();

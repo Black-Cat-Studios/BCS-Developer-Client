@@ -87,6 +87,10 @@ button.settings:hover, button.settings:focus, button.settings:active{
   background: var(--color-blend-opaque);
 }
 
+body.light button.settings img{
+  filter: invert(1);
+}
+
 #loaderpage{
   position: fixed;
   width: 100%;
@@ -98,6 +102,7 @@ button.settings:hover, button.settings:focus, button.settings:active{
   flex-direction: column;
   background: var(--color-bg);
   transition: all 1s;
+  z-index: 10000000000000000;
 }
 
 #loaderpage img{
@@ -180,7 +185,7 @@ hr{
 
 #tabber button.active::before{
   opacity: 1;
-  background-color: rgb(255, 255, 255)!important;
+  background-color: var(--color)!important;
 }
 
 #tabber button:hover::before{

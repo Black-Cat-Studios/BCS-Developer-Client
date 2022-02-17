@@ -1,12 +1,12 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron');
 const path = require('path')
 const Store = require('electron-store');
 require("dotenv").config();
 const {validate} = require('./res/loginIMAP');
-
 const defaul = {
     userInterface: {
-        theme: "system",
+        theme: "dark",
+        realTheme: 'system'
     }
 }
 
@@ -21,45 +21,55 @@ let mainWindow;
 function loadEmail(win){
     win.loadFile("./html/email.html")
 }
+const realTheme = store.get("userInterface.realTheme")
+
+if(realTheme === "system"){
+    if(nativeTheme.shouldUseDarkColors){
+        store.set("userInterface.theme","dark")
+    } else{
+        store.set("userInterface.theme","light")
+    }
+} else{
+    store.set("userInterface.theme",realTheme)
+}
+
+function createAuthWin(){
+    var authwin = new BrowserWindow({
+        width: 400,
+        height: 400,
+        frame: false,
+        backgroundColor: '#FFF',
+        hasShadow: false,
+        icon: './icons/logo.png',
+        resizable: false,
+        fullscreenable: false,
+        minimizable: false,
+        maximizable: false,
+        parent: mainWindow,
+        modal: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
+        }
+    });
+
+    authwin.loadFile('./html/login.html');
+    authwin.center();
+
+    authwin.once('close', function() {
+        mainWindow.webContents.send("loadin") 
+     });
+
+    require("@electron/remote/main").enable(authwin.webContents)
+
+    return authwin;
+}
 
 async function authenticate(){
 
     var account = store.get('account')
-
-    function createAuthWin(){
-        var authwin = new BrowserWindow({
-            width: 400,
-            height: 400,
-            frame: false,
-            backgroundColor: '#FFF',
-            hasShadow: false,
-            icon: './icons/logo.png',
-            resizable: false,
-            fullscreenable: false,
-            minimizable: false,
-            maximizable: false,
-            parent: mainWindow,
-            modal: true,
-            webPreferences: {
-                preload: path.join(__dirname, 'preload.js'),
-                nodeIntegration: true,
-                contextIsolation: false,
-                enableRemoteModule: true,
-            }
-        });
-
-        authwin.loadFile('./html/login.html');
-        authwin.center();
-
-        authwin.once('close', function() {
-            mainWindow.webContents.send("loadin") 
-         });
-
-        require("@electron/remote/main").enable(authwin.webContents)
-
-        return authwin;
-    }
-
     if (!account) {
         createAuthWin();
     } else if(await validate(account.user,account.pass)){
@@ -68,6 +78,15 @@ async function authenticate(){
         mainWindow.webContents.send("loadin")
     }
 }
+
+ipcMain.on('forceauthenticate', function(){
+    createAuthWin();
+})
+
+ipcMain.on('reload', function() {
+    app.relaunch()
+    app.exit()
+})
 
 function createWindow () {
     mainWindow = new BrowserWindow({

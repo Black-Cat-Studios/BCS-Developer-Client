@@ -4,7 +4,6 @@
 const remote = require('@electron/remote');
 const { ipcRenderer } = require("electron")
 const Store = require('electron-store');
-
 const store = new Store();
 
 const win = remote.getCurrentWindow(); /* Note this is different to the
@@ -18,6 +17,7 @@ document.onreadystatechange = (event) => {
         document.body.classList.remove("loaded")
   
         ipcRenderer.once('loadin', function(event) {
+            document.getElementById("user").textContent = store.get('account.nick')
             document.body.classList.add("loaded")
         });
 
@@ -38,8 +38,6 @@ document.onreadystatechange = (event) => {
         document.getElementById("settbutton").addEventListener('click', function(event) {
             ipcRenderer.send("opensettings")
         })
-
-        document.getElementById("user").textContent = store.get('account.nick')
     }
 };
 
@@ -51,6 +49,7 @@ window.onbeforeunload = (event) => {
 }
 
 function handleWindowControls() {
+
     // Make minimise/maximise/restore/close buttons work when they are clicked
     document.getElementById('min-button').addEventListener("click", event => {
         win.minimize();

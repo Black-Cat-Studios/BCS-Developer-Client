@@ -18,6 +18,16 @@ body.vegetta{
   --color-blend-opaque: rgba(226, 140, 252, 0.1);
 }
 
+body.light{
+  --color: black; 
+  --coloropp: white;
+  --color-fg: #2F2F2F;
+  --color-bg: #FFFFFF;
+  --color-bgblend: #e4e4e4;
+  --color-blend: #808080;
+  --color-blend-opaque: rgba(71, 71, 71, 0.1);
+}
+
 * {margin: 0; padding: 0; border: 0; vertical-align: baseline;}
 html {box-sizing: border-box;}
 *, *:before, *:after {box-sizing: inherit;}
