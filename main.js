@@ -107,7 +107,7 @@ function createWindow () {
         }
     });
 
-    mainWindow.loadFile('./html/index.html');
+    mainWindow.loadFile('./html/email.html');
 
     require("@electron/remote/main").enable(mainWindow.webContents)
 

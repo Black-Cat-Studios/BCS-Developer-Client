@@ -93,7 +93,7 @@ body {
 }
 
 body#native #titlebar{
-  background-color: #212121;
+  background-color: var(--color-fg);
 }
 
 body.noback #back-button{
@@ -125,6 +125,11 @@ body.nomax #max-button{
     -webkit-app-region: drag;
   }
   
+  ::placeholder{
+    color: var(--color-blend);
+    opacity: 1;
+  }
+
   #titlebar {
     color: #FFF;
   }

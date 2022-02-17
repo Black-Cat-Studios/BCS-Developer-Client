@@ -33,5 +33,10 @@ window.addEventListener('DOMContentLoaded', () => {
   </header>` + document.body.innerHTML
   let theme = store.get("userInterface.theme")
   document.body.classList.add(theme)
+
+  if(document.getElementById("addtotop")){
+    document.getElementById("addtotop").style.display="block"
+    document.getElementById("drag-region").prepend(document.getElementById("addtotop"))
+  }
 })
   
