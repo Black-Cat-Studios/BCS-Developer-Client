@@ -25,9 +25,9 @@
     border : 0;
     border-style : none;
     border-width : medium;
-    border-color : inherit;
+    border-color : initial;
     border-bottom : 0;
-    border-bottom-color : inherit;
+    border-bottom-color : initial;
     border-bottom-left-radius : 0;
     border-bottom-right-radius : 0;
     border-bottom-style : none;
@@ -35,17 +35,17 @@
     border-collapse : separate;
     border-image : none;
     border-left : 0;
-    border-left-color : inherit;
+    border-left-color : initial;
     border-left-style : none;
     border-left-width : medium;
     border-radius : 0;
     border-right : 0;
-    border-right-color : inherit;
+    border-right-color : initial;
     border-right-style : none;
     border-right-width : medium;
     border-spacing : 0;
     border-top : 0;
-    border-top-color : inherit;
+    border-top-color : initial;
     border-top-left-radius : 0;
     border-top-right-radius : 0;
     border-top-style : none;
@@ -56,7 +56,7 @@
     caption-side : top;
     clear : none;
     clip : auto;
-    color : inherit;
+    color : initial;
     columns : auto;
     column-count : auto;
     column-fill : balance;
@@ -76,7 +76,7 @@
     empty-cells : show;
     float : none;
     font : normal;
-    font-family : inherit;
+    font-family : initial;
     font-size : medium;
     font-style : normal;
     font-variant : normal;
@@ -124,10 +124,10 @@
     right : auto;
     tab-size : 8;
     table-layout : auto;
-    text-align : inherit;
+    text-align : initial;
     text-align-last : auto;
     text-decoration : none;
-    text-decoration-color : inherit;
+    text-decoration-color : initial;
     text-decoration-line : none;
     text-decoration-style : solid;
     text-indent : 0;
@@ -153,9 +153,20 @@
     all: unset;
 }
 
+#emailpreview{
+    background: var(--color-bgblend);
+    width: 100%; 
+    height: fit-content;
+    min-height: calc(100% - 110px); 
+    border-radius: 10px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
 #main{
     display: grid;
-    grid-template-columns: 20% 40% 50%;
+    grid-template-columns: 20% 30% 50%;
     grid-template-rows: 100%;
     overflow: hidden;
     padding: 0;
@@ -261,6 +272,10 @@ button#trash::before{
 
 #preview{
     box-shadow: 0 8px 20px -2px var(--coloropp);
+    padding: 30px;
+    overflow: auto;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 #preview{
@@ -268,10 +283,18 @@ button#trash::before{
 }
 
 #preview .span{
-    float: right;
+    display: block;
+    margin-bottom: 15px;
+    color: var(--color-blend)
+}
+
+#preview p {
+    font-weight: 500;
+    margin-top: 10px;   
 }
 
 p span{
+    font-weight: normal;
     color: var(--color-blend)
 }
 
@@ -311,4 +334,34 @@ div#addtotop::before{
     overflow: hidden;
     margin-left: 7px;
     margin-top: 5px;
+}
+
+div#rightbuttons{
+    float: right;
+    margin-top: 20px;
+}
+
+div#rightbuttons button{
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-bgblend);
+    border-radius: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .2s;
+    cursor: pointer;
+}
+
+div#rightbuttons button::after{
+    background: url('../icons/drafts-icon.png'); 
+    content: '';
+    width: 40%;
+    height: 40%;    
+    background-size: cover;
+    background-repeat: no-repeat; 
+}
+
+div#rightbuttons button:is(:hover, .active, :active){
+    background-color: var(--color-blend-opaque);
 }
