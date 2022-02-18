@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, nativeTheme} = require('electron');
 const path = require('path')
 const Store = require('electron-store');
+const wait = require('timers/promises').setTimeout;
 require("dotenv").config();
 const {validate} = require('./res/loginIMAP');
 const defaul = {
@@ -21,7 +22,7 @@ let mainWindow;
 function loadEmail(win){
     win.loadFile("./html/email.html")
 }
-const realTheme = store.get("userInterface.realTheme")
+let realTheme = store.get("userInterface.realTheme")
 
 if(realTheme === "system"){
     if(nativeTheme.shouldUseDarkColors){
@@ -83,9 +84,29 @@ ipcMain.on('forceauthenticate', function(){
     createAuthWin();
 })
 
-ipcMain.on('reload', function() {
-    app.relaunch()
-    app.exit()
+ipcMain.on('home', function(event){
+
+    let realTheme = store.get("userInterface.realTheme")
+
+    if(realTheme === "system"){
+        if(nativeTheme.shouldUseDarkColors){
+            store.set("userInterface.theme","dark")
+        } else{
+            store.set("userInterface.theme","light")
+        }
+    } else{
+        store.set("userInterface.theme",realTheme)
+    }
+
+    mainWindow.loadFile('./html/index.html');
+    mainWindow.webContents.once('dom-ready', async () => {
+        await wait(500)
+        mainWindow.webContents.send("loadin")
+    });
+})
+
+ipcMain.on('loadpage', function(event, name){
+    mainWindow.loadFile(`./html/${name}.html`);
 })
 
 function createWindow () {
@@ -107,7 +128,7 @@ function createWindow () {
         }
     });
 
-    mainWindow.loadFile('./html/email.html');
+    mainWindow.loadFile('./html/index.html');
 
     require("@electron/remote/main").enable(mainWindow.webContents)
 

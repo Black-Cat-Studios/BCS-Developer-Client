@@ -19,6 +19,7 @@ document.onreadystatechange = (event) => {
         ipcRenderer.once('loadin', function(event) {
             document.getElementById("user").textContent = store.get('account.nick')
             document.body.classList.add("loaded")
+            document.getElementById("main").style.display = "block";
         });
 
         document.getElementById("int").addEventListener('click', async (event) => {
@@ -37,6 +38,10 @@ document.onreadystatechange = (event) => {
 
         document.getElementById("settbutton").addEventListener('click', function(event) {
             ipcRenderer.send("opensettings")
+        })
+
+        document.getElementById('email').addEventListener('click', async (event) => {
+            ipcRenderer.send('loadpage','email')
         })
     }
 };

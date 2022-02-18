@@ -101,8 +101,9 @@ body.light button.settings img{
   align-items: center;
   flex-direction: column;
   background: var(--color-bg);
-  transition: all 1s;
+  transition: all .2s;
   z-index: 10000000000000000;
+  background: var(--color-fg);
 }
 
 #loaderpage img{

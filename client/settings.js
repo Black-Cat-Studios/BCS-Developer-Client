@@ -52,6 +52,10 @@ document.onreadystatechange = (event) => {
 
         document.getElementById('changenick').addEventListener("click", function () {
             store.set("account.nick", document.getElementById("nickname").value) 
+            document.getElementById('changenick').textContent = "Changed"
+            setTimeout(() => {
+                document.getElementById('changenick').textContent = "Change"
+            }, 2000);
         })
 
         document.getElementById('change').addEventListener("click", function () {
@@ -63,7 +67,7 @@ document.onreadystatechange = (event) => {
 window.onbeforeunload = (event) => {
     win.removeAllListeners();
 
-    ipcRenderer.send('reload')
+    ipcRenderer.send('home')
 }
 
 function handleWindowControls() {

@@ -106,7 +106,7 @@ input{
     border-radius: 5px;
     padding: 10px;
     width: calc(100% - 20px);
-    color: white;
+    color: var(--color);
     transition: all .2s;
     margin-bottom: 20px;
     display: block;

@@ -11,7 +11,7 @@
 body.vegetta{
   --color: rgb(255, 228, 251); 
   --coloropp: black;
-  --color-fg: #2c0041;
+  --color-fg: #271031;
   --color-bg: #371a3f;
   --color-bgblend: rgb(92, 56, 92);
   --color-blend: rgba(226, 155, 240, 0.4);
@@ -132,6 +132,10 @@ body.nomax #max-button{
 
   #titlebar {
     color: #FFF;
+  }
+
+  #titlebar span{
+    color: white;
   }
   
   #titlebar #drag-region {

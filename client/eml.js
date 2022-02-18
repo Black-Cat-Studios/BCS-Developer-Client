@@ -21,6 +21,19 @@ document.onreadystatechange = (event) => {
             e.preventDefault();
             const menu = new Menu();
 
+            if (e.target.classList.contains("mailentry") || e.target.parentNode.classList.contains("mailentry")) {
+                menu.append(new MenuItem({
+                  label: "Delete",
+                  click: function(){
+                    alert(`you clicked on ${e.target.id}`);
+                  }
+                }));
+
+                menu.append(new MenuItem({
+                    type: "separator"
+                }));
+              }
+
             menu.append(new MenuItem(new MenuItem({
                 label: "Back to home",
                 click: function(){
@@ -28,14 +41,30 @@ document.onreadystatechange = (event) => {
                 }
             })));
 
-            if (e.target.classList.contains("mailentry") || e.target.parentNode.classList.contains("mailentry")) {
-              menu.append(new MenuItem({
-                label: "Delete",
-                click: function(){
-                  alert(`you clicked on ${e.target.id}`);
-                }
-              }));
-            }
+            menu.append(new MenuItem({
+                type: "separator"
+            }));
+
+            menu.append(new MenuItem(
+                new MenuItem({
+                    label: "Copy",
+                    role: 'copy',
+                }), 
+            ));
+
+            menu.append(new MenuItem(
+                new MenuItem({
+                    label: "Cut",
+                    role: 'cut',
+                }),
+            ));
+
+            menu.append(new MenuItem(
+                new MenuItem({
+                    label: "Paste",
+                    role: 'paste',
+                }),
+            ));
 
             menu.popup({ window: win })
           }, false)
