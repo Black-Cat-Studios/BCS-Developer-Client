@@ -1,4 +1,4 @@
-const Imap = require('imap'), inspect = require('util').inspect;
+const Imap = require('imap'), 
 const simpleParser = require('mailparser').simpleParser;
 const { EventEmitter } = require('events');
 const { waitFor } = require('wait-for-event');
