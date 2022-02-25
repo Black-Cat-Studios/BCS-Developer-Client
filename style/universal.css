@@ -318,13 +318,4 @@ body.nomax #max-button{
     margin-top: 20px;
   }
 
-  hr ~ p {
-    width: calc(fit-content - 5px);
-    float: left;
-    height: 2px;
-    margin-top: -50px;
-    margin-bottom: 30px;
-    color: var(--color-blend);
-    font-weight: thin;
-  }
 

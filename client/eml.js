@@ -8,6 +8,7 @@ const Imap = require('imap');
 const simpleParser = require('mailparser').simpleParser;
 const { EventEmitter } = require('events');
 const { waitFor } = require('wait-for-event');
+const purify = require('dompurify')
 
 const store = new Store();
 
@@ -15,6 +16,23 @@ const win = remote.getCurrentWindow();
 
 const finalData = []; 
 const mailEmitter = new EventEmitter();
+
+function waitForElementToDisplay(selector, callback, checkFrequencyInMs, timeoutInMs) {
+    var startTimeInMs = Date.now();
+    (function loopSearch() {
+      if (document.getElementById(selector) != null) {
+        callback();
+        return;
+      }
+      else {
+        setTimeout(function () {
+          if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs)
+            return console.log('not found');
+          loopSearch();
+        }, checkFrequencyInMs);
+      }
+    })();
+  }
 
 function LoadBox(mailServer, boxName){
     mailServer.openBox(boxName, false, function (err, box) {
@@ -28,7 +46,7 @@ function LoadBox(mailServer, boxName){
                 let uid, headers, body = '';
                 msg.on('body', function (stream, info) {
                     simpleParser(stream, (err, parsed) => {
-                        finalData.push({ 
+                        const final = { 
                             subject: parsed.subject,
                             content: parsed.textAsHtml,
                             date: parsed.date,
@@ -38,13 +56,19 @@ function LoadBox(mailServer, boxName){
                             inReplyTo: parsed.inReplyTo,
                             replyTo: parsed.replyTo,
                             attatchments: parsed.attachments
-                        });
+                        }
+
+                        console.log(parsed.html)
+
+                        parsed.html ? final.html = parsed.html : final.html = false
+
+                        finalData.push(final);
 
                         document.getElementById("mail").innerHTML = 
                         `
                         <div id="${parsed.messageId}" class="mailentry">
                             <span>${String(parsed.date).split(' ')[0]} ${String(parsed.date).split(' ')[1]} ${String(parsed.date).split(' ')[2]}</span>
-                            <h3>${parsed.from.text}</h3>
+                            <h3>${parsed.from.value[0].name || parsed.from.value[0].address}</h3>
                             <p>${parsed.subject}</p>
                         </div>
                         ` + document.getElementById("mail").innerHTML
@@ -62,7 +86,6 @@ function LoadBox(mailServer, boxName){
 
             f.once("end",function(){
                 mailEmitter.emit('mailfetched')
-                loadEmail();
             });
             
         })
@@ -71,8 +94,64 @@ function LoadBox(mailServer, boxName){
     });
 }
 
+function previewEmail(mailId){
+    for (var i = 0; i < finalData.length; i++) {
+        const data = finalData[i];
+        if (data.id == mailId){
+            if (data.from.value[0].name){
+            document.getElementById("fromname").textContent = data.from.value[0].name
+            document.getElementById("fromemail").textContent = data.from.value[0].address
+            } else{
+                document.getElementById("fromname").textContent = data.from.value[0].address
+                document.getElementById("fromemail").textContent = ""
+            }
+            document.getElementById('fromsubject').textContent = data.subject
+            document.getElementById("fromdate").textContent = data.date.toDateString()
+
+            if (data.html){
+                document.getElementById("emailpreview").contentWindow.document.open();
+                document.getElementById("emailpreview").contentWindow.document.write(purify.sanitize(data.html));
+                document.getElementById("emailpreview").contentWindow.document.close();
+                document.getElementById("emailpreview").style.height =  document.getElementById("emailpreview").contentWindow.document.body.scrollHeight+'px';
+                document.getElementById("emailpreview").contentWindow.document.body.overflow = 'hidden'
+                document.getElementById("emailpreview").classList.remove('nonhtml');
+            } else{
+                document.getElementById("emailpreview").contentWindow.document.open();
+                document.getElementById("emailpreview").contentWindow.document.write(data.content);
+                document.getElementById("emailpreview").contentWindow.document.close();
+                document.getElementById("emailpreview").style.height = 'fit-content';
+                document.getElementById("emailpreview").classList.add('nonhtml');
+            } 
+        }
+    }
+};
+
+
+
 document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
+
+        const observer = new MutationObserver(function(mutations_list) {
+            mutations_list.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(added_node) {
+                    added_node.addEventListener("click", () => {
+                        var els = document.getElementsByClassName("activem");
+                        for(var i = 0; i < els.length; i++)
+                        {
+                            els[i].classList.remove('activem')
+                        }
+
+                        added_node.classList.add('activem')
+                        previewEmail(added_node.id);
+                    });
+                });
+            });
+        });
+
+        
+
+        observer.observe(document.getElementById("mail"), { subtree: false, childList: true });
+
         handleWindowControls();
         
         var imap = new Imap({
@@ -89,6 +168,30 @@ document.onreadystatechange = (event) => {
             document.getElementById("mail").innerHTML = '' 
             LoadBox(imap, "INBOX")
         });
+
+        async function switchBox(box) {
+            var els = document.getElementsByClassName("actived");
+            for(var i = 0; i < els.length; i++)
+            {
+                els[i].classList.remove('actived')
+            }
+        
+            document.getElementById(box).classList.add('actived')
+        
+            document.getElementById("mail").innerHTML = '' 
+            LoadBox(imap, box)
+        }
+
+        var els = document.getElementById("boxselector").childNodes 
+
+        for(var i = 0; i < els.length; i++)
+        {
+            const id = els[i].id
+            els[i].addEventListener('click', () => {
+                console.log(id)
+                switchBox(id)
+            });
+        }
 
         document.getElementById('useremail').textContent = store.get('account.user')
 
@@ -192,12 +295,3 @@ function handleWindowControls() {
     }
 }
 
-function loadEmail() {
-    for (var i = 0; i < finalData.length; i++) {
-        const entry = finalData[i];
-        console.log(document.getElementById(entry.id))
-        document.getElementById(entry.id).addEventListener("click", function(){
-            console.log(entry)
-        });
-    }
-}

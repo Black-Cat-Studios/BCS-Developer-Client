@@ -151,17 +151,24 @@
     z-index : auto;
     all: initial;
     all: unset;
+    overflow-y: hidden;
 }
 
 #emailpreview{
-    background: var(--color-bgblend);
+    background: white;
+    padding: 0px;
     width: 100%; 
     height: fit-content;
     min-height: calc(100% - 110px); 
-    border-radius: 10px;
     margin: auto;
     margin-bottom: 20px;
+    overflow-y: hidden;
+}
+
+#emailpreview.nonhtml{
+    background: var(--color-bgblend);
     padding: 10px;
+    border-radius: 10px;
 }
 
 #main{
@@ -236,23 +243,23 @@ hr{
     margin-left: -30px;
 }
 
-#boxselector button:hover, #boxselector button.active{
+#boxselector button:hover, #boxselector button.actived{
    background: var(--color-blend-opaque);
 }
 
-button#drafts::before{
+button#Drafts::before{
     background-image: url('../icons/drafts-icon.png');
 }
 
-button#sent::before{
+button#Sent::before{
     background-image: url('../icons/sent-icon.png');
 }
 
-button#spam::before{
+button#Spam::before{
     background-image: url('../icons/spam-icon.png');
 }
 
-button#trash::before{
+button#Trash::before{
     background-image: url('../icons/trash-icon.png');
 }
 
@@ -269,7 +276,7 @@ button#trash::before{
     scroll-snap-align: start;
 }
 
-#mail :is(.mailentry:hover, .mailentry.active){
+#mail :is(.mailentry:hover, .mailentry.activem){
     border-left: 3px solid var(--color);
     background: var(--color-blend-opaque);
 }
@@ -288,22 +295,45 @@ button#trash::before{
 
 #preview{
     user-select: initial!important;
+    padding-top: 10px;
 }
 
 #preview .span{
     display: block;
     margin-bottom: 15px;
-    color: var(--color-blend)
+    color: var(--color-blend);
+    display: block;
+}
+
+#preview h1{
+    font-size: 20px;
+}
+
+#preview hr{
+    position: relative;
+    float: initial;
+    margin: 5px!important;
+    margin-top: 5px;
+margin-bottom: 5px;
 }
 
 #preview p {
     font-weight: 500;
     margin-top: 10px;   
+    display: inline;
+    clear: both;
 }
 
-p span{
+#fromsubject{
+    padding-bottom: 15px;
+    display: flex;
+    padding-top: 10px;
+}
+
+p ~ span{
     font-weight: normal;
-    color: var(--color-blend)
+    color: var(--color-blend);
+    display: inline;
 }
 
 div#addtotop{
@@ -346,7 +376,7 @@ div#addtotop::before{
 
 div#rightbuttons{
     float: right;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 div#rightbuttons button{
@@ -359,6 +389,7 @@ div#rightbuttons button{
     justify-content: center;
     transition: background-color .2s;
     cursor: pointer;
+    margin-left: 2px;
 }
 
 div#rightbuttons button::after{
