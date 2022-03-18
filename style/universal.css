@@ -71,29 +71,55 @@ html, body {height: 100%; margin: 0;}
 body {
     font-family: "Segoe UI", sans-serif;
     color: var(--color);
-    border: 1px solid #00000000;
-    background-color:var(--color-bg);
+    border: 1px solid var(--color-fg);
     overflow-y: hidden;
+    background-color: transparent;
+}
+
+.onlyback{
+  border: 1px solid transparent;
+}
+
+#main{
+  background-color:var(--color-bg);
+}
+
+.onlyback #main{
+  border-radius: 0px 0px 5px 5px;
+  border-left: 1px solid var(--color-bgblend);
+  border-right: 1px solid var(--color-bgblend);
+  border-bottom: 1px solid var(--color-bgblend);
+}
+
+.onlyback #titlebar{
+  border-radius: 5px 5px 0 0;
+  border-left: 1px solid var(--color-bgblend);
+  border-right: 1px solid var(--color-bgblend);
+  border-top: 1px solid var(--color-bgblend);
 }
 
 #main > * {
   user-select: none;
 }
   
-  #titlebar {
+#titlebar {
     display: block;
     position: fixed;
     height: 32px;
     width: calc(100% - 2px);
 }
   
-  .maximized #titlebar {
+.maximized #titlebar {
     width: 100%;
     padding: 0;
 }
 
-body#native #titlebar{
+body #titlebar{
   background-color: var(--color-fg);
+}
+
+body:not(#native) #main{
+  background-color: var(--color-fg)
 }
 
 body.noback #back-button{
@@ -257,15 +283,13 @@ body.nomax #max-button{
 
   .onlyback #back-button{
     grid-column: 4;
+    cursor: pointer;
   }
 
   .onlyback #back-button:hover {
-    background: #E81123 !important;
+    background: transparent !important;
   }
   
-  .onlyback #back-button:active {
-    background: #F1707A !important;
-  }
   .onlyback #back-button:active .icon {
     filter: invert(1);
   }

@@ -30,9 +30,11 @@ async function validate(usr, pswd) {
     mailServer1.connect();
 
     await waitFor("letsgo",returnval)
+    mailServer1.end();
     return valid
     
 } catch (e) {
+    mailServer1.destroy()
     console.log("\n\n" + e)
 }
 }

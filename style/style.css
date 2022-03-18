@@ -39,7 +39,7 @@ div.app::after{
   background: var(--color); 
   width: 140px;
   padding: 7px; 
-  border-radius: 10px; 
+  border-radius: 7px; 
   bottom: 10px;
   float: left;   
   color: var(--coloropp);

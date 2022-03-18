@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="../style/universal.css" />
   </head>
-  <body class="noback nomin nomax">
+  <body class=" onlyback nomin nomax">
     <div id="main">
       <img src="../icons/logo.png">
       <h1>Login</h1>
@@ -26,19 +26,27 @@
     </script>
     <style>
         body{
-            background-color: var(--color-fg);
+            background-color: transparent;
             color: white;
         }
 
         #main h1{
             margin-top:-2px;
             margin-bottom: 20px;
+            border-radius: 0 0 5px 5px;
         }
 
         #main{
-            width: 90%!important;
-            margin: auto;
-            margin-top: 40px;
+            padding: 30px;
+            border-left: 1px solid var(--color-bgblend)!important;
+            border-right: 1px solid var(--color-bgblend)!important;
+            border-bottom: 1px solid var(--color-bgblend)!important;
+        }
+
+        #titlebar{
+            border-left: 1px solid var(--color-bgblend)!important;
+            border-right: 1px solid var(--color-bgblend)!important;
+            border-top: 1px solid var(--color-bgblend)!important;
         }
 
         #main img{

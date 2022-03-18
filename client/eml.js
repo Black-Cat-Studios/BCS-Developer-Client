@@ -6,7 +6,6 @@ const {validate} = require('../res/loginIMAP');
 const Store = require('electron-store');
 const Imap = require('imap');
 const simpleParser = require('mailparser').simpleParser;
-const { EventEmitter } = require('events');
 const { waitFor } = require('wait-for-event');
 const purify = require('dompurify')
 
@@ -15,83 +14,70 @@ const store = new Store();
 const win = remote.getCurrentWindow(); 
 
 const finalData = []; 
-const mailEmitter = new EventEmitter();
-
-function waitForElementToDisplay(selector, callback, checkFrequencyInMs, timeoutInMs) {
-    var startTimeInMs = Date.now();
-    (function loopSearch() {
-      if (document.getElementById(selector) != null) {
-        callback();
-        return;
-      }
-      else {
-        setTimeout(function () {
-          if (timeoutInMs && Date.now() - startTimeInMs > timeoutInMs)
-            return console.log('not found');
-          loopSearch();
-        }, checkFrequencyInMs);
-      }
-    })();
-  }
 
 function LoadBox(mailServer, boxName){
-    mailServer.openBox(boxName, false, function (err, box) {
-        if (err) throw err;
-        try{
-        mailServer.search(['ALL'], function (err, results) {
+
+    mailServer.closeBox([true], function(){
+        mailServer.openBox(boxName, false, function (err, box) {
+            if (err) throw err;
+            try{
+            mailServer.search(['ALL'], function (err, results) {
+        
+                let f = mailServer.fetch(results, {bodies: ''});
+        
+                f.on('message', function (msg, seqno) {
+                    let uid, headers, body = '';
+                    msg.on('body', function (stream, info) {
+                        simpleParser(stream, (err, parsed) => {
+                            var messageID = parsed.messageId.replace(/</g, ''),
+                            messageID = messageID.replace(/>/g, '')
+                            console.log(messageID)
+                            const final = { 
+                                subject: parsed.subject,
+                                content: parsed.textAsHtml,
+                                date: parsed.date,
+                                id: messageID,
+                                seqno: seqno,
+                                from: parsed.from,
+                                to: parsed.to,
+                                inReplyTo: parsed.inReplyTo,
+                                replyTo: parsed.replyTo,
+                                attatchments: parsed.attachments
+                            }
+        
+                            parsed.html ? final.html = parsed.html : final.html = false
     
-            let f = mailServer.fetch(results, {bodies: ''});
+                            finalData.push(final);
     
-            f.on('message', function (msg, seqno) {
-                let uid, headers, body = '';
-                msg.on('body', function (stream, info) {
-                    simpleParser(stream, (err, parsed) => {
-                        const final = { 
-                            subject: parsed.subject,
-                            content: parsed.textAsHtml,
-                            date: parsed.date,
-                            id: parsed.messageId,
-                            from: parsed.from,
-                            to: parsed.to,
-                            inReplyTo: parsed.inReplyTo,
-                            replyTo: parsed.replyTo,
-                            attatchments: parsed.attachments
-                        }
-
-                        console.log(parsed.html)
-
-                        parsed.html ? final.html = parsed.html : final.html = false
-
-                        finalData.push(final);
-
-                        document.getElementById("mail").innerHTML = 
-                        `
-                        <div id="${parsed.messageId}" class="mailentry">
-                            <span>${String(parsed.date).split(' ')[0]} ${String(parsed.date).split(' ')[1]} ${String(parsed.date).split(' ')[2]}</span>
-                            <h3>${parsed.from.value[0].name || parsed.from.value[0].address}</h3>
-                            <p>${parsed.subject}</p>
-                        </div>
-                        ` + document.getElementById("mail").innerHTML
+                            document.getElementById("mail").innerHTML = 
+                            `
+                            <div id="${messageID}" class="${seqno} mailentry">
+                                <span>${String(parsed.date).split(' ')[0]} ${String(parsed.date).split(' ')[1]} ${String(parsed.date).split(' ')[2]}</span>
+                                <h3>${parsed.from.value[0].name || parsed.from.value[0].address}</h3>
+                                <p>${parsed.subject}</p>
+                            </div>
+                            ` + document.getElementById("mail").innerHTML
+                        });
                     });
+                    /*msg.once('attributes', function (attrs) {
+                        uid = attrs.uid;
+                        console.log(attrs);
+                    });*/
+                })
+        
+                f.once("error", function (err) {
+                    return conslole.log(err);
                 });
-                /*msg.once('attributes', function (attrs) {
-                    uid = attrs.uid;
-                    console.log(attrs);
-                });*/
-            })
     
-            f.once("error", function (err) {
-                return conslole.log(err);
-            });
-
-            f.once("end",function(){
-                mailEmitter.emit('mailfetched')
-            });
-            
-        })
-        }
-        catch{(function (err) {return console.log(err)})};
-    });
+                f.once("end",function(){
+                    
+                });
+                
+            })
+            }
+            catch{(function (err) {return console.log(err)})};
+        });
+    })
 }
 
 function previewEmail(mailId){
@@ -112,8 +98,7 @@ function previewEmail(mailId){
                 document.getElementById("emailpreview").contentWindow.document.open();
                 document.getElementById("emailpreview").contentWindow.document.write(purify.sanitize(data.html));
                 document.getElementById("emailpreview").contentWindow.document.close();
-                document.getElementById("emailpreview").style.height =  document.getElementById("emailpreview").contentWindow.document.body.scrollHeight+'px';
-                document.getElementById("emailpreview").contentWindow.document.body.overflow = 'hidden'
+                document.getElementById("emailpreview").style.height =  Number(document.getElementById("emailpreview").contentWindow.document.body.scrollHeight) + 20 +'px';
                 document.getElementById("emailpreview").classList.remove('nonhtml');
             } else{
                 document.getElementById("emailpreview").contentWindow.document.open();
@@ -130,6 +115,10 @@ function previewEmail(mailId){
 
 document.onreadystatechange = (event) => {
     if (document.readyState == "complete") {
+
+        document.getElementById("emailpreview").contentWindow.document.onload = ()=>{
+            document.getElementById("emailpreview").contentWindow.document.body.overflowY = 'hidden'
+        }
 
         const observer = new MutationObserver(function(mutations_list) {
             mutations_list.forEach(function(mutation) {
@@ -166,7 +155,9 @@ document.onreadystatechange = (event) => {
 
         imap.once('ready', function() {
             document.getElementById("mail").innerHTML = '' 
-            LoadBox(imap, "INBOX")
+            imap.openBox('INBOX', function(){
+                LoadBox(imap, "INBOX")
+            })
         });
 
         async function switchBox(box) {
@@ -179,7 +170,9 @@ document.onreadystatechange = (event) => {
             document.getElementById(box).classList.add('actived')
         
             document.getElementById("mail").innerHTML = '' 
-            LoadBox(imap, box)
+            if (box !=='Spam') {
+                LoadBox(imap, box)
+            }
         }
 
         var els = document.getElementById("boxselector").childNodes 
@@ -203,7 +196,15 @@ document.onreadystatechange = (event) => {
                 menu.append(new MenuItem({
                   label: "Delete",
                   click: function(){
-                    alert(`you clicked on ${e.target.id}`);
+                    if (e.target.classList.contains("mailentry")) {
+                        imap.addFlags(e.target.classList[0], 'Deleted', function(err) {
+                            console.log(err)
+                        })
+                    } else {
+                        imap.addFlags(e.target.parentNode.classList[0], 'Deleted', function(err) {
+                            console.log(err)
+                        })
+                    }
                   }
                 }));
 
