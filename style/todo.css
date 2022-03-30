@@ -1,0 +1,5 @@
+@import url("./universal.css");
+
+body{
+    background-color: var(--color-bg);
+}
